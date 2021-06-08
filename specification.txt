@@ -1,0 +1,69 @@
+Coding assignment
+
+In order to make a market during market hours, we need to maintain an order book of different
+stock equities. The order book shall contain level II data for different equities. During market hours
+our traders need to know the best bid price and best ask price of a specific equity as soon as
+possible: let’s assume every second.
+
+Now, you are requested to design and implement a system which can maintain an order book and
+return the best price efficiently. Imagine by the end of the trading day you might have received
+hundreds of thousands of orders, perhaps on thousands of tickers. The market data is coming from
+exchange in a string format. The string will have following format:
+
+timestamp|order id|action|ticker|side|price|size
+
+The timestamp is a unixstamp and order id is unique for each order. Order id is a combination of
+characters and numbers. Ticker is short code representing equities. Side can only be 'B' for 'bid and
+'S' for 'ask'. Price is a number with 5 digit precision and size can only be positive integer (0 is not
+allowed). For action, it can only be 'a' for 'add', 'u' for 'update' and 'c' for 'cancel'. Only the size of
+order can be updated.
+
+NOTE: Not all fields need to be present. For example, the a 'cancel' record does not need to
+include a price.
+
+These steps represent the life cycle of an order:
+1. Firstly, an order is added to the order book with a unique order id.
+2. Then, it can be potentially updated through its id.
+3. Finally, it can get cancelled according to its unique order id.
+
+Her is an example:
+1st example of data stream:
+data 1: 1568390243|abbb11|a|AAPL|B|209.00000|100
+explaination: timestamp|order id|action|ticker|side|price|size
+data 2: 1568390244|abbb11|u|101
+explaination: timestamp|order id|action|size
+data : 1568390245|abbb11|c
+explaination: timestamp|order id|action
+2nd example of data stream:
+data 1: 1568390201|abbb11|a|AAPL|B|209.00000|100
+explaination: timestamp|order id|action|ticker|side|price|size
+
+data 2: 1568390202|abbb12|a|AAPL|S|210.00000|10
+explaination: timestamp|order id|action|ticker|side|price|size
+
+data 3: 1568390204|abbb11|u|10
+
+explaination: timestamp|order id|action|size
+data 4: 1568390203|abbb12|u|101
+explaination: timestamp|order id|action|size
+data 5: 1568390243|abbb11|c
+explaination: timestamp|order id|action
+You can assume the data streaming is in string format and comes one by one. Your system shall
+receive a line of string at one time point. The best bid and ask price can be simply a function which
+
+Just assume it happens. However, you are required to write some test cases to prove the correctness
+of your code.
+You are free to use any language to implement the system.
+If you want you can try to implement the following functions, however you a free to add / remove
+other parameters or come up with your own design:
+#-------------------------------------------
+# this function add / update or cancel an order in the order book
+def processOrder(orderbook, order):
+where:
+* orderBook is a data structure maintaining the orders (choose /
+implement it as you wish)
+* order is an order in the pipe delimited string format shown above
+---------------------------------------------
+# this function gets the best bid and ask for the specified ticker
+# If no ticket is present, return 0 for both bid and ask
+def getBestBidAndAsk(orderbook, ticker)
